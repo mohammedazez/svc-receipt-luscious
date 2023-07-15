@@ -1,85 +1,81 @@
-## Arsitektur
+## Achitecture
 <hr/>
-Menggunakan Heksagonal arsitektur, dimana service ini dipisah menjadi 3 bagan besar yaitu blok kiri(interface), blok tengah(core), dan blok kanan (infrastructure).
+Implementing Hexagon Achitecture for software pattern. This pattern isolate external systems and other external code such as user interfaces and databases from the core application. Hexagon achitecture separate the code into three large formalized areas: user-side (interface), business logic (core) and server-side (infrastructure).
 
-#### Perhatikan gambar berikut:
+### Hexagon archicture pattern
+
 <img src="hexa_arch.jpeg">
 
-### Blok kiri (Interface)
-Merupakan bagian antarmuka yang digunakan mengambil input data dari user(client) kemudian mengemas nya kembali untuk dikirimkan ke usecase(alur bisnis), dan mengembalikan kepada client requestor.
+### User-Side (Interface)
+User-facing interface that take the input data from user and repackage it in from that is convinient for this use cases, than return data back in a form that is convinient for displaying it back for user (HTTP, HTML, JSON, CLI etc).
 
-### Blok tengah (Core)
-Merupakan bagian inti dari sebuah service(bussines logic), inti/core ini tidak asal di inject/dipanggil, tetapi wajib melalui sebuah port. Port adalah sebuah interface yang sudah di inisiasi bersamaan ketika core dibuat.
+### Business Logic (Core)
+The core part of a service that will isolate the business logic from external systems (user-side or server-side). The communication between core and external systems must be through a port.
 
-### Blok Kanan (Infrastructure)
-Bagian Kanan ini biasanya menyimpan kumpulan teknologi yang digunakan dalam membangun service(bukan bussiness logic), seperti repository, module whatsapp, sms, third-party payment dll
+### Server-Side (Infrastructure)
+Contain technology tools (like repository, access to external API/services, message brokers, frameworks, etc) and adapt its input or output to a port, which fits the application core needs.
 
-### Ihtisar
-Oleh karena itu, berikut ini adalah susunan folder yang dibangun berdasarkan arsitektur heksagonal
+### Implementation
 
 ```sh
-app/                               # tempat inisiasi aplikasi
-    api/                           # aplikasi yang menggunakan restapi
-        extl/                      # folder eksternal
-            main.go                # main external
-        intl/                      # folder internal
-            main.go                # main internal
-    worker/                        # aplikasi worker               
-    migration/                     # migrasi
+app/                               # directory for application initialization
+    api/                           # app that use restapi
+        extl/                      # external directory
+            main.go                # external main file
+        intl/                      # internal directory
+            main.go                # internal main file
+    worker/                        # the app worker               
+    migration/                     # migration
 
-docs/                              # dokumentasi
-    img/                           # menyimpan gambar constant
-    readme/                        # dokumentasi readme folder
+docs/                              # documentation
+    img/                           # image docs file
+    readme/                        # readme docs file
+    swagger/                       # directory for store the api documentation
 
-interface/                         # antarmuka/blok kiri, bisa dikatakan gerbang keluar masuk untuk user/requestor/client
+interface/                         # interface directory
     worker/                        # interface worker
     api/                           # interface rest-api
-        extl/                      # interface rest-api untuk eksternal
-            v1/                    # versi rest-api
-                customer/          # domain/object feature
-                    response/
-                        detail.go  # response spesifik per domain feature   
-                    request/       # request folder tiap object feature
-                        login.go   # request login
-                    handler/
-                        auth.go    # handler  
-                    injector.go    # injector, digunakan untuk inisiasi service, repo yang dipakai
-                routes/            # folder routing, mencakup seluruh domain/object feature
-                    middleware/    # middleware untuk routing
-        intl/                      # interface rest-api untuk internal
-            v1/                    # versi rest-api
-        common/                    # digunakan untuk setting reusable function,struct, dll 
-            response               # response reusable
+        extl/                      # external interface rest-api
+            v1/                    # api version
+                promo/             # promo domain
+                    response/      # api response needs (struct response etc)  
+                    request/       # api request needs (struct request etc)
+                    handler.go     # api handler
+                routes/            # routes directory
+                    middleware/    # middleware for routing
+                    routing.go     # declare api routes
+        intl/                      # internal interface rest-api
+            v1/                    # api version
+        common/                    # store common reusable code 
+        utils/                     # store reusable tools 
 
-core/                              # inti/ alur bisnis dari aplikasi
-    model/                         # folder model 
-        merchant.go                # model merchant
-        customer.go                # model customer
-    port/                          # folder port
-        merchant/                  # folder port merchant
+core/                              # business logic directory
+    model/                         # model direcotry
+        base.go                    # the base model
+    port/                          # port directory
+        promo/                     # promo port directory
             service.go             # port/interface service 
             repostiroy.go          # port/interface repository
-        customer/                  # folder port customer
-    merchant/                      # folder merchant service
-        merchant_service.go        # merchant service
-    customer/                      # folder customer service
-        auth_service.go            # manajemen autorisasi akun
-        account_service.go         # manajemen data akun
+    promo/                         # directory for promo service
+        service.go                 # promo service
+        service_test.go            # promo test service
 
-infrastructure/                    # kumpulan teknologi yang dipakai
-    repository/                    # folder teknologi repository
-        mysql/                     # spesifikasi database
-            merchant/              # object feature
+infrastructure/                    # directory for technology tools
+    repository/                    # repository directory
+        mysql/                     # database specification
+            promo/                 # promo domain
+                repository.go      # store the promo repository
         redis/
         mongodb/
-    messaging/                     # folder teknologi lain
+        mock/                      # mock repository directory
+          promo/                   # promo domain
+                repository.go      # store the promo mock repository
+    adapter/                     
 
-utils/                             # tools/alat yang dapat dipakai berulang
+utils/                             # resable tools or code
+    config/                        # config file directory
+        mongo/
+            mongo.go               # mongo configuration
     logger/                        # logger
-    config/                        # folder konfigurasi main berada di utils
-        mysql.go                   # contoh konfigurasi mysql
-        redis.go
-        app.go
-    net/
-        httpclient/
+    helper/                        # helper
 ```
