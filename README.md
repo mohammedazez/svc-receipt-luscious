@@ -1,10 +1,9 @@
 1. Buatlah struktur database (ERD dan/atau Table Relationship). (20)
 
-![ERD Aplikasi Receipt Luscious.drawio](/home/muhamad/aziz/jb/TLab/ERD Aplikasi Receipt Luscious.drawio.png)
+![ERD Aplikasi Receipt Luscious drawio](https://github.com/mohammedazez/svc-receipt-luscious/assets/37678093/45a212e8-cdbf-4c46-bce2-0c78e28846bc)
+![Example data drawio](https://github.com/mohammedazez/svc-receipt-luscious/assets/37678093/60aebd00-a01e-43c0-b358-2535da945b48)
+![User Interface](https://github.com/mohammedazez/svc-receipt-luscious/assets/37678093/e2ac399b-2306-4677-a052-0bf6af9c1066)
 
-![Example data.drawio](/home/muhamad/aziz/jb/TLab/Example data.drawio.png)
-
-![User Interface](/home/muhamad/aziz/jb/TLab/User Interface.png)
 
 
 
