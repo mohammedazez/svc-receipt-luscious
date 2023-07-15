@@ -16,9 +16,11 @@ func NewService(repo port.Repository) port.Service {
 }
 
 func (s *Service) List(ingredientName string) ([]domain.IngredientService, error) {
+
 	ingredient, err := s.repo.GetAllListIngredient(ingredientName)
 	if err != nil {
 		return nil, err
 	}
+
 	return ingredient, nil
 }

@@ -5,7 +5,6 @@ import (
 
 	port "svc-receipt-luscious/core/port/healthCheck"
 	"svc-receipt-luscious/interface/api/common"
-	"svc-receipt-luscious/utils/constant"
 
 	"github.com/labstack/echo/v4"
 )
@@ -32,6 +31,6 @@ func NewHandler(service port.Service) *Handler {
 func (h *Handler) Get(c echo.Context) error {
 	get := h.service.Get()
 	response := new(common.DefaultResponse)
-	response.SetResponseData(constant.SuccessGet, get)
+	response.SetResponseData(http.StatusText(http.StatusOK), get, http.StatusOK, true)
 	return c.JSON(http.StatusOK, response)
 }

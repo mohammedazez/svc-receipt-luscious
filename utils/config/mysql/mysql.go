@@ -70,8 +70,6 @@ func Init() {
 // MysqlConnect connect to mysql using config name. return *gorm.DB incstance
 func MysqlConnect() *gorm.DB {
 	mysqlConfig := LoadConfig()
-	fmt.Println(os.Getenv("DB_HOST"))
-	fmt.Println(mysqlConfig)
 
 	dsn := fmt.Sprintf(`%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local`, mysqlConfig.User, mysqlConfig.Password, mysqlConfig.Host, strconv.Itoa(mysqlConfig.Port), mysqlConfig.DBName)
 

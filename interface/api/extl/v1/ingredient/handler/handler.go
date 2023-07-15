@@ -5,7 +5,6 @@ import (
 	port "svc-receipt-luscious/core/port/ingredient"
 	"svc-receipt-luscious/interface/api/extl/v1/ingredient/request"
 	"svc-receipt-luscious/interface/api/extl/v1/ingredient/response"
-	"svc-receipt-luscious/utils/constant"
 
 	"github.com/labstack/echo/v4"
 )
@@ -32,7 +31,7 @@ func (h *Handler) List(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	res := response.NewResponseList(constant.SuccessGet, ingredientList)
+	res := response.NewResponseList(http.StatusText(http.StatusOK), ingredientList, http.StatusOK)
 	return c.JSON(http.StatusOK, res)
 
 }

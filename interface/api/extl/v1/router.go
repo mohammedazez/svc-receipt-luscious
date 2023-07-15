@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"log"
 	healthCheckService "svc-receipt-luscious/core/healthCheck"
 	ingredientService "svc-receipt-luscious/core/ingredient"
@@ -21,8 +20,6 @@ func API(route *echo.Echo) {
 	if err != nil {
 		log.Panic(err.Error())
 	}
-
-	fmt.Println(mysqlDB)
 
 	// instance repo
 	healthCheckRepositoryMysql := healtCheckRepositoryMysql.NewRepository(mysqlDB)
