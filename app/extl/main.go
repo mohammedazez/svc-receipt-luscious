@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	routes "svc-receipt-luscious/interface/api/extl/v1"
 	"svc-receipt-luscious/utils/config"
 	"time"
 
@@ -13,12 +14,14 @@ import (
 func main() {
 
 	config.LoadConfig()
-
 	e := echo.New()
+
+	// route
+	routes.API(e)
 
 	// Start server
 	go func() {
-		if err := e.Start(":" + os.Getenv("APP_PORT")); err != nil {
+		if err := e.Start(":" + os.Getenv("APP_PORT_LUSCIOUS")); err != nil {
 			e.Logger.Info("Shutting down the server")
 		}
 	}()
