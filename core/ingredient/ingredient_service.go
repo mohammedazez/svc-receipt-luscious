@@ -1,6 +1,7 @@
 package ingredient
 
 import (
+	"context"
 	domain "svc-receipt-luscious/core/domain/ingredient"
 	port "svc-receipt-luscious/core/port/ingredient"
 )
@@ -23,4 +24,16 @@ func (s *Service) List(ingredientName string) ([]domain.IngredientService, error
 	}
 
 	return ingredient, nil
+}
+
+func (s *Service) Insert(form *domain.IngredientService) error {
+
+	ctx := context.Background()
+
+	err := s.repo.InsertIngredient(ctx, form)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

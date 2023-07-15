@@ -41,5 +41,8 @@ func API(route *echo.Echo) {
 
 	ingredientRouteV1 := v1Route.Group("/ingredient")
 	ingredientRouteV1.GET("", ingredientHandlerV1.List)
+	ingredientRouteV1.POST("", ingredientHandlerV1.Insert)
+	ingredientRouteV1.PUT("/:ingredient_id", ingredientHandlerV1.Update)
+	ingredientRouteV1.DELETE("/:ingredient_id", ingredientHandlerV1.Delete)
 
 }

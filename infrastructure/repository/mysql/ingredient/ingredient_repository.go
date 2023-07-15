@@ -7,6 +7,7 @@ import (
 	"svc-receipt-luscious/infrastructure/repository/mysql/transactor"
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -16,17 +17,17 @@ type (
 	}
 
 	Ingredient struct {
-		ID             string    `gorm:"primarykey;<-:create"`
-		IngredientName string    `gorm:"column:ingredient_name"`
-		RecipeID       string    `gorm:"column:recipe_id"`
-		Quantity       string    `gorm:"column:quantity"`
-		CreatedAt      time.Time `gorm:"column:created_at;<-:create"`
-		UpdatedAt      time.Time `gorm:"column:updated_at"`
+		ID             string `gorm:"primaryKey;column:id"`
+		IngredientName string `gorm:"column:ingredient_name"`
+		RecipeID       string `gorm:"column:recipe_id"`
+		Quantity       string `gorm:"column:quantity"`
+		CreatedAt      string `gorm:"column:created_at"`
+		UpdatedAt      string `gorm:"column:updated_at"`
 	}
 )
 
 func (Ingredient) TableName() string {
-	return "ingredients"
+	return "Ingredients"
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -62,4 +63,30 @@ func (repo *Repository) GetAllListIngredient(ingredientName string) ([]domain.In
 	}
 
 	return outData, nil
+}
+
+func (repo *Repository) InsertIngredient(ctx context.Context, inData *domain.IngredientService) error {
+	ingredients := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	if err := db.Model(ingredients).Create(&ingredients).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func mappingInput(ingredient *domain.IngredientService) Ingredient {
+	var result Ingredient
+
+	id := uuid.New()
+
+	timeNow := time.Now()
+	result.ID = id.String()
+	result.IngredientName = ingredient.IngredientName
+	result.RecipeID = ingredient.RecipeID
+	result.Quantity = ingredient.Quantity
+	result.CreatedAt = timeNow.String()
+
+	return result
 }
