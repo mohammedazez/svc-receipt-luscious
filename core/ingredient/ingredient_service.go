@@ -37,3 +37,14 @@ func (s *Service) Insert(form *domain.IngredientService) error {
 
 	return nil
 }
+
+func (s *Service) Update(form *domain.IngredientService) (err error) {
+	ctx := context.Background()
+
+	err = s.repo.UpdateIngredient(ctx, form)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

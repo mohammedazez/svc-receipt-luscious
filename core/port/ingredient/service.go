@@ -8,5 +8,6 @@ type (
 	Service interface {
 		List(ingredientName string) ([]domain.IngredientService, error)
 		Insert(form *domain.IngredientService) error
+		Update(form *domain.IngredientService) (err error)
 	}
 )

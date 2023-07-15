@@ -76,6 +76,26 @@ func (repo *Repository) InsertIngredient(ctx context.Context, inData *domain.Ing
 	return nil
 }
 
+func (repo *Repository) UpdateIngredient(ctx context.Context, inData *domain.IngredientService) error {
+	ingredients := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	timeNow := time.Now()
+	ingredients.UpdatedAt = timeNow.String()
+
+	err := db.Unscoped().Save(&ingredients).Error
+	if err != nil {
+		return err
+	}
+
+	err = db.Where("id = ?", ingredients.ID).Unscoped().Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func mappingInput(ingredient *domain.IngredientService) Ingredient {
 	var result Ingredient
 
