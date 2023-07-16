@@ -2,6 +2,7 @@ package ingredient
 
 import (
 	"context"
+	"log"
 	domain "svc-receipt-luscious/core/domain/ingredient"
 	port "svc-receipt-luscious/core/port/ingredient"
 )
@@ -43,6 +44,7 @@ func (s *Service) Update(form *domain.IngredientService) (err error) {
 
 	err = s.repo.UpdateIngredient(ctx, form)
 	if err != nil {
+		log.Printf("Failed to update ingredient: %v", err)
 		return err
 	}
 

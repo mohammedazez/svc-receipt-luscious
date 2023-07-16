@@ -3,6 +3,7 @@ package ingredient
 import (
 	"context"
 	"errors"
+	"log"
 	domain "svc-receipt-luscious/core/domain/ingredient"
 	"svc-receipt-luscious/infrastructure/repository/mysql/transactor"
 	"time"
@@ -83,13 +84,16 @@ func (repo *Repository) UpdateIngredient(ctx context.Context, inData *domain.Ing
 	timeNow := time.Now()
 	ingredients.UpdatedAt = timeNow.String()
 
-	err := db.Unscoped().Save(&ingredients).Error
-	if err != nil {
-		return err
+	updates := map[string]interface{}{
+		"ingredient_name": ingredients.IngredientName,
+		"recipe_id":       ingredients.RecipeID,
+		"quantity":        ingredients.Quantity,
+		"updated_at":      ingredients.UpdatedAt,
 	}
 
-	err = db.Where("id = ?", ingredients.ID).Unscoped().Error
+	err := db.Model(&Ingredient{}).Where("id = ?", inData.ID).Updates(updates).Error
 	if err != nil {
+		log.Printf("Failed to update ingredient: %v", err)
 		return err
 	}
 
