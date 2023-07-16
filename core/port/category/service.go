@@ -9,7 +9,7 @@ type (
 		List(categoryName string) ([]domain.Category, error)
 		// Detail(categoryName string) (*domain.Category, error)
 		Insert(form *domain.Category) error
-		// Update(form *domain.Category) error
+		Update(form *domain.Category) error
 		// Delete(categoryID string) error
 	}
 )

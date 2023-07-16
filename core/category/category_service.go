@@ -2,6 +2,7 @@ package category
 
 import (
 	"context"
+	"log"
 	domain "svc-receipt-luscious/core/domain/category"
 	port "svc-receipt-luscious/core/port/category"
 )
@@ -42,6 +43,18 @@ func (s *Service) Insert(form *domain.Category) error {
 
 	err := s.repo.InsertCategory(ctx, form)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Service) Update(form *domain.Category) error {
+	ctx := context.Background()
+
+	err := s.repo.UpdateCategory(ctx, form)
+	if err != nil {
+		log.Printf("Failed to update category: %v", err)
 		return err
 	}
 

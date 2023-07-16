@@ -10,7 +10,7 @@ type (
 		GetAllListCategory(categoryName string) ([]domain.Category, error)
 		// GetDetailCategory(categoryID string) (domain.Category, error)
 		InsertCategory(ctx context.Context, inData *domain.Category) error
-		// UpdateIngredient(ctx context.Context, inData *domain.IngredientService) error
+		UpdateCategory(ctx context.Context, inData *domain.Category) error
 		// DeleteIngredient(ctx context.Context, ingredientID string) error
 	}
 )

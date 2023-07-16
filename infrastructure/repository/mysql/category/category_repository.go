@@ -82,6 +82,26 @@ func (repo *Repository) InsertCategory(ctx context.Context, inData *domain.Categ
 	return nil
 }
 
+func (repo *Repository) UpdateCategory(ctx context.Context, inData *domain.Category) error {
+	categories := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	timeNow := time.Now()
+	categories.UpdatedAt = timeNow.String()
+
+	updates := map[string]interface{}{
+		"category_name": categories.CategoryName,
+		"updated_at":    categories.UpdatedAt,
+	}
+
+	err := db.Model(&Category{}).Where("id = ?", inData.ID).Updates(updates).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func mappingInput(category *domain.Category) Category {
 	var result Category
 
