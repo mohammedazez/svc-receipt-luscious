@@ -76,6 +76,28 @@ func (repo *Repository) InsertRecipe(ctx context.Context, inData *domain.Recipe)
 	return nil
 }
 
+func (repo *Repository) UpdateRecipe(ctx context.Context, inData *domain.Recipe) error {
+	recipes := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	timeNow := time.Now()
+	recipes.UpdatedAt = timeNow.String()
+
+	updates := map[string]interface{}{
+		"recipe_name": recipes.RecipeName,
+		"category_id": recipes.CategoryID,
+		"how_to_make": recipes.HowToMake,
+		"updated_at":  recipes.UpdatedAt,
+	}
+
+	err := db.Model(&Recipe{}).Where("id = ?", inData.ID).Updates(updates).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func mappingInput(recipe *domain.Recipe) Recipe {
 	var result Recipe
 

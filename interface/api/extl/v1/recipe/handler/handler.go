@@ -80,31 +80,33 @@ func (h *Handler) Insert(c echo.Context) error {
 	return c.JSON(http.StatusCreated, res)
 }
 
-// func (h *Handler) Update(c echo.Context) error {
+func (h *Handler) Update(c echo.Context) error {
 
-// 	req := new(request.RequestUpdate)
-// 	if err := c.Bind(req); err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
+	req := new(request.RequestUpdate)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
-// 	errVal := validation.ValidateReq(req)
-// 	if errVal != nil {
-// 		return c.JSON(http.StatusBadRequest, errVal)
-// 	}
+	errVal := validation.ValidateReq(req)
+	if errVal != nil {
+		return c.JSON(http.StatusBadRequest, errVal)
+	}
 
-// 	category := new(domain.Category)
-// 	category.ID = c.Param("category_id")
-// 	category.CategoryName = req.CategoryName
+	recipe := new(domain.Recipe)
+	recipe.ID = c.Param("recipe_id")
+	recipe.RecipeName = req.RecipeName
+	recipe.CategoryID = req.CategoryID
+	recipe.HowToMake = req.HowToMake
 
-// 	err := h.service.Update(category)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 	}
+	err := h.service.Update(recipe)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
-// 	res := new(common.DefaultResponseNoData)
-// 	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
-// 	return c.JSON(http.StatusOK, res)
-// }
+	res := new(common.DefaultResponseNoData)
+	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
+	return c.JSON(http.StatusOK, res)
+}
 
 // func (h *Handler) Delete(c echo.Context) error {
 

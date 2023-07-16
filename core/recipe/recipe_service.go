@@ -2,6 +2,7 @@ package recipe
 
 import (
 	"context"
+	"log"
 	domain "svc-receipt-luscious/core/domain/recipe"
 	port "svc-receipt-luscious/core/port/recipe"
 )
@@ -32,6 +33,18 @@ func (s *Service) Insert(form *domain.Recipe) error {
 
 	err := s.repo.InsertRecipe(ctx, form)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Service) Update(form *domain.Recipe) error {
+	ctx := context.Background()
+
+	err := s.repo.UpdateRecipe(ctx, form)
+	if err != nil {
+		log.Printf("Failed to update recipe: %v", err)
 		return err
 	}
 
