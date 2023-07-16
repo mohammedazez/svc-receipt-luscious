@@ -9,5 +9,6 @@ type (
 		List(recipeName string) ([]domain.Recipe, error)
 		Insert(form *domain.Recipe) error
 		Update(form *domain.Recipe) error
+		Delete(recipeID string) error
 	}
 )

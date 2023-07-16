@@ -98,6 +98,16 @@ func (repo *Repository) UpdateRecipe(ctx context.Context, inData *domain.Recipe)
 	return nil
 }
 
+func (repo *Repository) DeleteRecipe(ctx context.Context, recipeID string) error {
+	db := repo.getDB(ctx)
+	err := db.Where("id = ?", recipeID).Delete(&Recipe{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func mappingInput(recipe *domain.Recipe) Recipe {
 	var result Recipe
 

@@ -10,6 +10,6 @@ type (
 		GetAllListRecipe(recipeName string) ([]domain.Recipe, error)
 		InsertRecipe(ctx context.Context, inData *domain.Recipe) error
 		UpdateRecipe(ctx context.Context, inData *domain.Recipe) error
-		// 	DeleteIngredient(ctx context.Context, ingredientID string) error
+		DeleteRecipe(ctx context.Context, recipeID string) error
 	}
 )

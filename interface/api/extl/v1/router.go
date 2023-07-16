@@ -72,6 +72,6 @@ func API(route *echo.Echo) {
 	// recipeRouteV1.GET("/:recipe_id", recipeHandlerV1.Detail)
 	recipeRouteV1.POST("", recipeHandlerV1.Insert)
 	recipeRouteV1.PUT("/:recipe_id", recipeHandlerV1.Update)
-	// recipeRouteV1.DELETE("/:recipe_id", recipeHandlerV1.Delete)
+	recipeRouteV1.DELETE("/:recipe_id", recipeHandlerV1.Delete)
 
 }

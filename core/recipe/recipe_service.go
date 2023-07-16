@@ -50,3 +50,15 @@ func (s *Service) Update(form *domain.Recipe) error {
 
 	return nil
 }
+
+func (s *Service) Delete(recipeID string) error {
+	ctx := context.Background()
+
+	err := s.repo.DeleteRecipe(ctx, recipeID)
+	if err != nil {
+		log.Printf("Failed to delete recipe: %v", err)
+		return err
+	}
+
+	return nil
+}
