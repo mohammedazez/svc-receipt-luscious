@@ -61,6 +61,8 @@ func (repo *Repository) GetAllListRecipe(recipeName string) ([]domain.Recipe, er
 		var recipe domain.Recipe
 		recipe.ID = value.ID
 		recipe.RecipeName = value.RecipeName
+		recipe.CategoryID = value.CategoryID
+		recipe.HowToMake = value.HowToMake
 		recipe.CreatedAt = value.CreatedAt
 		recipe.UpdatedAt = value.UpdatedAt
 		outData = append(outData, recipe)

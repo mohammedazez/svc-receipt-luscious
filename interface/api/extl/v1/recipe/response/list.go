@@ -19,6 +19,8 @@ func NewResponseList(message string, data []domain.Recipe, code int) *common.Def
 
 		recipe.ID = val.ID
 		recipe.RecipeName = val.RecipeName
+		recipe.CategoryID = val.CategoryID
+		recipe.HowToMake = val.HowToMake
 		recipe.CreatedAt = val.CreatedAt
 		recipe.UpdatedAt = val.UpdatedAt
 		recipes = append(recipes, recipe)
