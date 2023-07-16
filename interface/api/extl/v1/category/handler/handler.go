@@ -75,7 +75,7 @@ func (h *Handler) Insert(c echo.Context) error {
 	}
 
 	res := new(common.DefaultResponseNoData)
-	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
+	res.SetResponseDataNoData(http.StatusText(http.StatusCreated), http.StatusCreated, true)
 	return c.JSON(http.StatusCreated, res)
 }
 

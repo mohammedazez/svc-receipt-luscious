@@ -46,7 +46,7 @@ func API(route *echo.Echo) {
 	recipeHandlerV1 := recipeHandlerV1.NewHandler(recipeService)
 
 	// V1 routes
-	v1Route := route.Group("/v1")
+	v1Route := route.Group("/api/v1")
 
 	healthCheckRouteV1 := v1Route.Group("/health")
 	healthCheckRouteV1.GET("", healthCheckHandlerV1.Get)

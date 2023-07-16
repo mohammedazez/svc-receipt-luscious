@@ -42,7 +42,12 @@ func (repo *Repository) getDB(ctx context.Context) *gorm.DB {
 
 func (repo *Repository) GetAllListCategory(categoryName string) ([]domain.Category, error) {
 	categories := make([]Category, 0)
+
 	query := repo.db.Table("Categories")
+
+	if categoryName != "" {
+		query = query.Where("category_name LIKE ?", "%"+categoryName+"%")
+	}
 
 	result := query.Find(&categories)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -55,6 +60,7 @@ func (repo *Repository) GetAllListCategory(categoryName string) ([]domain.Catego
 		category.ID = value.ID
 		category.CategoryName = value.CategoryName
 		category.CreatedAt = value.CreatedAt
+		category.UpdatedAt = value.UpdatedAt
 		outData = append(outData, category)
 	}
 

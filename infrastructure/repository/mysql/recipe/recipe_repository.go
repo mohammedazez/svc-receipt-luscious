@@ -47,6 +47,10 @@ func (repo *Repository) GetAllListRecipe(recipeName string) ([]domain.Recipe, er
 	recipes := make([]Recipe, 0)
 	query := repo.db.Table("Recipes")
 
+	if recipeName != "" {
+		query = query.Where("recipe_name LIKE ?", "%"+recipeName+"%")
+	}
+
 	result := query.Find(&recipes)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		result.Error = nil
@@ -57,8 +61,8 @@ func (repo *Repository) GetAllListRecipe(recipeName string) ([]domain.Recipe, er
 		var recipe domain.Recipe
 		recipe.ID = value.ID
 		recipe.RecipeName = value.RecipeName
-		recipe.UpdatedAt = value.UpdatedAt
 		recipe.CreatedAt = value.CreatedAt
+		recipe.UpdatedAt = value.UpdatedAt
 		outData = append(outData, recipe)
 	}
 

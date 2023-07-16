@@ -2,6 +2,7 @@ package validation
 
 import (
 	"fmt"
+	"net/http"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -23,7 +24,6 @@ func ValidateReq(req interface{}) interface{} {
 
 // ErrorMessage is to set error message for validator to perform readable error message.
 func errorMessage(err error, req interface{}) interface{} {
-	var msg string
 	var errorValidation = map[string]string{}
 
 	if castedObject, ok := err.(validator.ValidationErrors); ok {
@@ -32,17 +32,18 @@ func errorMessage(err error, req interface{}) interface{} {
 
 			errorValidation[fieldName] = fieldMsg
 
-			if msg == "" {
-				msg = fieldMsg
-			}
 		}
 	}
 
 	return struct {
+		Status          bool              `json:"status"`
 		Message         string            `json:"message"`
+		Code            int               `json:"code"`
 		ErrorValidation map[string]string `json:"error_validation"`
 	}{
-		Message:         msg,
+		Status:          false,
+		Message:         http.StatusText(http.StatusBadRequest),
+		Code:            http.StatusBadRequest,
 		ErrorValidation: errorValidation,
 	}
 }
