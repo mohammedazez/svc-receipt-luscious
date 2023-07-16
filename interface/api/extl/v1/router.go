@@ -56,7 +56,7 @@ func API(route *echo.Echo) {
 	categoryRouteV1 := v1Route.Group("/category")
 	categoryRouteV1.GET("", categoryHandlerV1.List)
 	// categoryRouteV1.GET("/:category_id", categoryHandlerV1.Detail)
-	// categoryRouteV1.POST("", categoryHandlerV1.Insert)
+	categoryRouteV1.POST("", categoryHandlerV1.Insert)
 	// categoryRouteV1.PUT("/:category_id", categoryHandlerV1.Update)
 	// categoryRouteV1.DELETE("/:category_id", categoryHandlerV1.Delete)
 

@@ -5,7 +5,9 @@ import (
 	"errors"
 	domain "svc-receipt-luscious/core/domain/category"
 	"svc-receipt-luscious/infrastructure/repository/mysql/transactor"
+	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -57,4 +59,38 @@ func (repo *Repository) GetAllListCategory(categoryName string) ([]domain.Catego
 	}
 
 	return outData, nil
+}
+
+// func (repo *Repository) GetDetailCategory(categoryID string) (domain.Category, error) {
+// 	var category Category
+
+// 	if err := repo.db.First(&category, categoryID).Error; err != nil {
+// 		return , err
+// 	}
+
+// 	return category, nil
+// }
+
+func (repo *Repository) InsertCategory(ctx context.Context, inData *domain.Category) error {
+	categories := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	if err := db.Model(categories).Create(&categories).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func mappingInput(category *domain.Category) Category {
+	var result Category
+
+	id := uuid.New()
+
+	timeNow := time.Now()
+	result.ID = id.String()
+	result.CategoryName = category.CategoryName
+	result.CreatedAt = timeNow.String()
+
+	return result
 }

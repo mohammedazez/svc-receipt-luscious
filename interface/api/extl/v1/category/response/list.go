@@ -28,3 +28,15 @@ func NewResponseList(message string, data []domain.Category, code int) *common.D
 	responseData.SetResponseData(message, categories, code, true)
 	return responseData
 }
+
+func NewResponseDetail(message string, category *domain.Category, code int) *common.DefaultResponse {
+	data := new(Response)
+	data.ID = category.ID
+	data.CategoryName = category.CategoryName
+	data.CreatedAt = category.CreatedAt
+	data.UpdatedAt = category.UpdatedAt
+
+	responseData := new(common.DefaultResponse)
+	responseData.SetResponseData(message, data, code, true)
+	return responseData
+}
