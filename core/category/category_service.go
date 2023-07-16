@@ -60,3 +60,15 @@ func (s *Service) Update(form *domain.Category) error {
 
 	return nil
 }
+
+func (s *Service) Delete(categoryID string) error {
+	ctx := context.Background()
+
+	err := s.repo.DeleteCategory(ctx, categoryID)
+	if err != nil {
+		log.Printf("Failed to delete category: %v", err)
+		return err
+	}
+
+	return nil
+}

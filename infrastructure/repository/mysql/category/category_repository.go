@@ -102,6 +102,16 @@ func (repo *Repository) UpdateCategory(ctx context.Context, inData *domain.Categ
 	return nil
 }
 
+func (repo *Repository) DeleteCategory(ctx context.Context, categoryID string) error {
+	db := repo.getDB(ctx)
+	err := db.Where("id = ?", categoryID).Delete(&Category{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func mappingInput(category *domain.Category) Category {
 	var result Category
 

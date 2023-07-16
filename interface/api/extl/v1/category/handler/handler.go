@@ -105,16 +105,16 @@ func (h *Handler) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
-// func (h *Handler) Delete(c echo.Context) error {
+func (h *Handler) Delete(c echo.Context) error {
 
-// 	categoryID := c.Param("category_id")
+	categoryID := c.Param("category_id")
 
-// 	err := h.service.Delete(categoryID)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 	}
+	err := h.service.Delete(categoryID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
-// 	res := new(common.DefaultResponseNoData)
-// 	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
-// 	return c.JSON(http.StatusOK, res)
-// }
+	res := new(common.DefaultResponseNoData)
+	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
+	return c.JSON(http.StatusOK, res)
+}
