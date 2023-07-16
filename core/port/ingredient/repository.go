@@ -10,5 +10,6 @@ type (
 		GetAllListIngredient(ingredientName string) ([]domain.IngredientService, error)
 		InsertIngredient(ctx context.Context, inData *domain.IngredientService) error
 		UpdateIngredient(ctx context.Context, inData *domain.IngredientService) error
+		DeleteIngredient(ctx context.Context, ingredientID string) error
 	}
 )
