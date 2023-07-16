@@ -5,12 +5,15 @@ import (
 	categoryService "svc-receipt-luscious/core/category"
 	healthCheckService "svc-receipt-luscious/core/healthCheck"
 	ingredientService "svc-receipt-luscious/core/ingredient"
+	recipeService "svc-receipt-luscious/core/recipe"
 	categoryRepositoryMysql "svc-receipt-luscious/infrastructure/repository/mysql/category"
 	healtCheckRepositoryMysql "svc-receipt-luscious/infrastructure/repository/mysql/healthCheck"
 	ingredientRepositoryMysql "svc-receipt-luscious/infrastructure/repository/mysql/ingredient"
+	recipeRepositoryMysql "svc-receipt-luscious/infrastructure/repository/mysql/recipe"
 	categoryHandlerV1 "svc-receipt-luscious/interface/api/extl/v1/category/handler"
 	healthCheckHandlerV1 "svc-receipt-luscious/interface/api/extl/v1/healthCheck"
 	ingredientHandlerV1 "svc-receipt-luscious/interface/api/extl/v1/ingredient/handler"
+	recipeHandlerV1 "svc-receipt-luscious/interface/api/extl/v1/recipe/handler"
 	"svc-receipt-luscious/utils/config/mysql"
 
 	"github.com/labstack/echo/v4"
@@ -28,16 +31,19 @@ func API(route *echo.Echo) {
 	healthCheckRepositoryMysql := healtCheckRepositoryMysql.NewRepository(mysqlDB)
 	ingredientRepositoryMysql := ingredientRepositoryMysql.NewRepository(mysqlDB)
 	categoryRepositoryMysql := categoryRepositoryMysql.NewRepository(mysqlDB)
+	recipeRepositoryMysql := recipeRepositoryMysql.NewRepository(mysqlDB)
 
 	// instance service
 	healthCheckService := healthCheckService.NewService(healthCheckRepositoryMysql)
 	ingredientService := ingredientService.NewService(ingredientRepositoryMysql)
 	categoryService := categoryService.NewService(categoryRepositoryMysql)
+	recipeService := recipeService.NewService(recipeRepositoryMysql)
 
 	// instance handler
 	healthCheckHandlerV1 := healthCheckHandlerV1.NewHandler(healthCheckService)
 	ingredientHandlerV1 := ingredientHandlerV1.NewHandler(ingredientService)
 	categoryHandlerV1 := categoryHandlerV1.NewHandler(categoryService)
+	recipeHandlerV1 := recipeHandlerV1.NewHandler(recipeService)
 
 	// V1 routes
 	v1Route := route.Group("/v1")
@@ -61,11 +67,11 @@ func API(route *echo.Echo) {
 	categoryRouteV1.DELETE("/:category_id", categoryHandlerV1.Delete)
 
 	// recipe
-	// recipeRouteV1 := v1Route.Group("/recipe")
-	// recipeRouteV1.GET()
-	// recipeRouteV1.GET()
-	// recipeRouteV1.POST()
-	// recipeRouteV1.PUT()
-	// recipeRouteV1.DELETE()
+	recipeRouteV1 := v1Route.Group("/recipe")
+	recipeRouteV1.GET("", recipeHandlerV1.List)
+	// recipeRouteV1.GET("/:recipe_id", recipeHandlerV1.Detail)
+	// recipeRouteV1.POST("", recipeHandlerV1.Insert)
+	// recipeRouteV1.PUT("/:recipe_id", recipeHandlerV1.Update)
+	// recipeRouteV1.DELETE("/:recipe_id", recipeHandlerV1.Delete)
 
 }
