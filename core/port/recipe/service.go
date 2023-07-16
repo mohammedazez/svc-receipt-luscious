@@ -7,5 +7,6 @@ import (
 type (
 	Service interface {
 		List(recipeName string) ([]domain.Recipe, error)
+		Insert(form *domain.Recipe) error
 	}
 )

@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"svc-receipt-luscious/infrastructure/repository/mysql/transactor"
+	"time"
 
 	domain "svc-receipt-luscious/core/domain/recipe"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -18,6 +20,8 @@ type (
 	Recipe struct {
 		ID         string `gorm:"primaryKey;column:id"`
 		RecipeName string `gorm:"column:recipe_name"`
+		CategoryID string `gorm:"column:category_id"`
+		HowToMake  string `gorm:"column:how_to_make"`
 		CreatedAt  string `gorm:"column:created_at"`
 		UpdatedAt  string `gorm:"column:updated_at"`
 	}
@@ -59,4 +63,30 @@ func (repo *Repository) GetAllListRecipe(recipeName string) ([]domain.Recipe, er
 	}
 
 	return outData, nil
+}
+
+func (repo *Repository) InsertRecipe(ctx context.Context, inData *domain.Recipe) error {
+	recipes := mappingInput(inData)
+
+	db := repo.getDB(ctx)
+	if err := db.Model(recipes).Create(&recipes).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func mappingInput(recipe *domain.Recipe) Recipe {
+	var result Recipe
+
+	id := uuid.New()
+
+	timeNow := time.Now()
+	result.ID = id.String()
+	result.RecipeName = recipe.RecipeName
+	result.CategoryID = recipe.CategoryID
+	result.HowToMake = recipe.HowToMake
+	result.CreatedAt = timeNow.String()
+
+	return result
 }

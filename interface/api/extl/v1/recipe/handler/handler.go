@@ -3,8 +3,12 @@ package handler
 import (
 	"net/http"
 	port "svc-receipt-luscious/core/port/recipe"
+	"svc-receipt-luscious/interface/api/common"
 	"svc-receipt-luscious/interface/api/extl/v1/recipe/request"
 	"svc-receipt-luscious/interface/api/extl/v1/recipe/response"
+	"svc-receipt-luscious/interface/api/utils/validation"
+
+	domain "svc-receipt-luscious/core/domain/recipe"
 
 	"github.com/labstack/echo/v4"
 )
@@ -49,30 +53,32 @@ func (h *Handler) List(c echo.Context) error {
 
 // }
 
-// func (h *Handler) Insert(c echo.Context) error {
+func (h *Handler) Insert(c echo.Context) error {
 
-// 	req := new(request.CategoryInsert)
-// 	if err := c.Bind(req); err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
+	req := new(request.RequestInsert)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
-// 	errVal := validation.ValidateReq(req)
-// 	if errVal != nil {
-// 		return c.JSON(http.StatusBadRequest, errVal)
-// 	}
+	errVal := validation.ValidateReq(req)
+	if errVal != nil {
+		return c.JSON(http.StatusBadRequest, errVal)
+	}
 
-// 	category := new(domain.Category)
-// 	category.CategoryName = req.CategoryName
+	category := new(domain.Recipe)
+	category.RecipeName = req.RecipeName
+	category.CategoryID = req.CategoryID
+	category.HowToMake = req.HowToMake
 
-// 	err := h.service.Insert(category)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 	}
+	err := h.service.Insert(category)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
-// 	res := new(common.DefaultResponseNoData)
-// 	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
-// 	return c.JSON(http.StatusCreated, res)
-// }
+	res := new(common.DefaultResponseNoData)
+	res.SetResponseDataNoData(http.StatusText(http.StatusOK), http.StatusOK, true)
+	return c.JSON(http.StatusCreated, res)
+}
 
 // func (h *Handler) Update(c echo.Context) error {
 
