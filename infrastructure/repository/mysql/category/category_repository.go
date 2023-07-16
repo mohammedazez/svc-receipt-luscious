@@ -25,7 +25,7 @@ type (
 )
 
 func (Category) TableName() string {
-	return "Categories"
+	return "categories"
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -43,7 +43,7 @@ func (repo *Repository) getDB(ctx context.Context) *gorm.DB {
 func (repo *Repository) GetAllListCategory(categoryName string) ([]domain.Category, error) {
 	categories := make([]Category, 0)
 
-	query := repo.db.Table("Categories")
+	query := repo.db.Table("categories")
 
 	if categoryName != "" {
 		query = query.Where("category_name LIKE ?", "%"+categoryName+"%")
@@ -67,15 +67,20 @@ func (repo *Repository) GetAllListCategory(categoryName string) ([]domain.Catego
 	return outData, nil
 }
 
-// func (repo *Repository) GetDetailCategory(categoryID string) (domain.Category, error) {
-// 	var category Category
+func (repo *Repository) GetDetailCategory(categoryID string) (*domain.Category, error) {
+	var Categories domain.Category
 
-// 	if err := repo.db.First(&category, categoryID).Error; err != nil {
-// 		return , err
-// 	}
+	result := repo.db.Joins("JOIN recipes ON categories.id = recipes.category_id").
+		Select("categories.*, recipes.*").
+		Where("categories.id = ?", categoryID).
+		First(&Categories)
 
-// 	return category, nil
-// }
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &Categories, nil
+}
 
 func (repo *Repository) InsertCategory(ctx context.Context, inData *domain.Category) error {
 	categories := mappingInput(inData)

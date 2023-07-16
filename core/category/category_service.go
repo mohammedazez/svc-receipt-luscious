@@ -2,6 +2,7 @@ package category
 
 import (
 	"context"
+	"fmt"
 	"log"
 	domain "svc-receipt-luscious/core/domain/category"
 	port "svc-receipt-luscious/core/port/category"
@@ -27,15 +28,17 @@ func (s *Service) List(categoryName string) ([]domain.Category, error) {
 	return category, nil
 }
 
-// func (s *Service) Detail(categoryName string) (*domain.Category, error) {
+func (s *Service) Detail(categoryName string) (*domain.Category, error) {
 
-// 	category, err := s.repo.GetDetailCategory(categoryName)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	category, err := s.repo.GetDetailCategory(categoryName)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return &category, nil
-// }
+	fmt.Println(category)
+
+	return category, nil
+}
 
 func (s *Service) Insert(form *domain.Category) error {
 

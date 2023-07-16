@@ -27,7 +27,7 @@ type (
 )
 
 func (Ingredient) TableName() string {
-	return "Ingredients"
+	return "ingredients"
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -44,7 +44,7 @@ func (repo *Repository) getDB(ctx context.Context) *gorm.DB {
 
 func (repo *Repository) GetAllListIngredient(ingredientName string) ([]domain.IngredientService, error) {
 	ingredients := make([]Ingredient, 0)
-	query := repo.db.Table("Ingredients")
+	query := repo.db.Table("ingredients")
 
 	if ingredientName != "" {
 		query = query.Where("ingredient_name LIKE ?", "%"+ingredientName+"%")

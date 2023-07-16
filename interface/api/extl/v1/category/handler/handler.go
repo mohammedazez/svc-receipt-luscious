@@ -40,19 +40,19 @@ func (h *Handler) List(c echo.Context) error {
 
 }
 
-// func (h *Handler) Detail(c echo.Context) error {
+func (h *Handler) Detail(c echo.Context) error {
 
-// 	categoryID := c.Param("category_id")
+	categoryID := c.Param("category_id")
 
-// 	categoryList, err := h.service.Detail(categoryID)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 	}
+	categoryList, err := h.service.Detail(categoryID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
-// 	res := response.NewResponseDetail(http.StatusText(http.StatusOK), categoryList, http.StatusOK)
-// 	return c.JSON(http.StatusOK, res)
+	res := response.NewResponseDetail(http.StatusText(http.StatusOK), categoryList, http.StatusOK)
+	return c.JSON(http.StatusOK, res)
 
-// }
+}
 
 func (h *Handler) Insert(c echo.Context) error {
 
